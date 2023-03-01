@@ -1,0 +1,35 @@
+{
+  "common": {
+    "hello": "Hello",
+    "login": "Log In",
+    "link_to_news": "Tap to see all news"
+  },
+  "header": {
+    "title": "Hot News"
+  },
+  "welcome": {
+    "first_part_of_title": "Biden visited Ukraine",
+    "second_part_of_title": "Biden visits Zelensky in Kyiv and says Putin 'dead wrong' on Ukraine war",
+    "welcome_text": "The US will back Ukraine in its fight against Russia for as long as it takes, US President Joe Biden has said on an unannounced visit to Kyiv. We have every confidence you're going to continue to prevail, he said.  Mr Biden's first trip to Ukraine as president came days before the first anniversary of Russia's invasion. He said that Russia's President Vladimir Putin had been dead wrong to think Russia could outlast Ukraine and its Western allies. He met Ukrainian President Volodymyr Zelensky and the pair visited a memorial to soldiers who have died in the nine years since Russia annexed Crimea and its proxy forces captured parts of the eastern Donbas region. Mr Biden's presence was intended to reaffirm America's unwavering commitment to Ukraine's democracy, sovereignty, and territorial integrity, according to a White House statement.  He had taken a 10-hour train journey from Poland to reach Kyiv in secret, later returning to Poland. Russia was informed about the trip a few hours before President Biden's departure for deconfliction purposes, a US official said. After the visit, US Secretary of State Antony Blinken announced a new package of security assistance for Ukraine valued at $450m (£373m), including ammunition for howitzers and the Himars rocket system, Javelin missiles and air surveillance radars.  The US will also provide Kyiv with an extra $10m in emergency assistance to maintain Ukraine's energy infrastructure, Mr Blinken said. A new wave of sanctions against individuals and companies that are trying to evade or backfill Russia's war machine will also be announced later this week. Mr Zelensky said Ukraine's victory over Russia depended on resolve and that he saw such determination in Mr Biden. It is now and in Ukraine that the fate of the world order, which is based on rules, on humanity... is being decided, he said."
+  },
+  "login": {
+    "form_title": "Log In your Account",
+    "login_form": {
+      "username": "Username",
+      "password": "Password"
+    }
+  },
+  "news": {
+    "posted_by": "Posted by:",
+    "published_at": "Published at:",
+    "load_more": "Load more",
+    "check_source": "Check source of article",
+    "link_for_actions": "Log In to see more abilities"
+  },
+  "profile": {
+    "account": "Account",
+    "your_liked_news": "Your liked news",
+    "no_liked_news": "You don't have liked news",
+    "if_you_want_like_news": "If you want to like news, follow the link below"
+  }
+}
