@@ -24,7 +24,7 @@ const Profile = () => {
 
   const likedNewsSet = useMemo(() => {
     return new Set<IArticle>(
-      news.filter((article: IArticle) => article.isLiked)
+      news?.filter((article: IArticle) => article.isLiked)
     );
   }, [news]);
   const renderArticles = useMemo(() => {
