@@ -1,14 +1,14 @@
 import { IArticle, INewsResponse } from "../interfaces/news";
 
 export const newsAdapter = {
-  mapNews: (response: INewsResponse) => {
-    const articles = response.articles.map((article) => {
-      article.isLiked = false;
-      return article;
-    });
+  // mapNews: (response: INewsResponse) => {
+  //   const articles = response.articles.map((article) => {
+  //     article.isLiked = false;
+  //     return article;
+  //   });
 
-    return { ...response, articles };
-  },
+  //   return { ...response, articles };
+  // },
 
   setLikedNews: (
     response: INewsResponse,

@@ -15,6 +15,8 @@ import { Box, Grid, styled } from "@mui/material";
 
 // styles
 import { variables } from "../../assets/styles/variables";
+import { useFetch } from "../../hooks/useFetch";
+import newsAPI from "../../api/news";
 
 export interface ISelectedArticle {
   isItemSelected: boolean;
@@ -26,28 +28,32 @@ const News = () => {
 
   const dispatch = useDispatch();
 
-  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
 
   const { news, languageOfNews, newsResponse, loading } = useSelector(
     (state: StateModel) => state.newsReducer
   );
 
-  const handleRemoveArticle = (removedArticleUrl: string) => {
+  console.log(news?.length);
+
+  // const news1 = useFetch(() => newsAPI.getTest());
+
+  const handleRemoveArticle = (removedArticleIndex: number) => {
     const filteredNews = news.filter(
-      (article) => article.url !== removedArticleUrl
+      (_, index) => index !== removedArticleIndex
     );
     dispatch(setNews(filteredNews));
   };
 
   const handleLoadMore = () => {
-    setPage((prevState) => prevState + 1);
+    setPageSize((prevState) => prevState + 10);
     dispatch(setLoadMore(true));
   };
 
-  const handleLikeArticle = (likedArticleUrl: string) => {
+  const handleLikeArticle = (likedArticleIndex: number) => {
     const copiedNews: IArticle[] = JSON.parse(JSON.stringify(news));
-    const updatedNews = copiedNews.map((article) => {
-      if (article.url === likedArticleUrl) {
+    const updatedNews = copiedNews.map((article, index) => {
+      if (index === likedArticleIndex) {
         article.isLiked = !article.isLiked;
       }
       return article;
@@ -56,9 +62,10 @@ const News = () => {
   };
 
   const renderArticles = useMemo(() => {
-    return news?.map((article: IArticle) => (
+    return news?.map((article: IArticle, index: number) => (
       <Article
-        key={article.url}
+        index={index}
+        key={index}
         article={article}
         isLikedArticle={false}
         handleLikeArticle={handleLikeArticle}
@@ -68,8 +75,8 @@ const News = () => {
   }, [news]);
 
   useEffect(() => {
-    dispatch(getNews({ lang: languageOfNews, page }));
-  }, [page, languageOfNews]);
+    dispatch(getNews({ lang: languageOfNews, max: pageSize }));
+  }, [pageSize, languageOfNews]);
 
   return (
     <>
@@ -79,7 +86,7 @@ const News = () => {
             {renderArticles}
           </Grid>
         </LoaderWrapper>
-        {news && newsResponse && news.length < newsResponse.totalResults && (
+        {news && newsResponse && news.length < newsResponse.totalArticles && (
           <LoadMoreButton onClick={handleLoadMore}>
             <>{t("news.load_more")}</>
           </LoadMoreButton>

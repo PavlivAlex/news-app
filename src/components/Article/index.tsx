@@ -11,16 +11,26 @@ import { Box, Grid, Paper, Typography, styled } from "@mui/material";
 
 // styles
 import { variables } from "../../assets/styles/variables";
+import { useDispatch } from "react-redux";
+import { likeArticle } from "../../redux/slices/news";
 
 interface IProps {
+  index?: number;
   article: IArticle;
   isLikedArticle: boolean;
-  handleRemoveArticle?: (articleUrl: string) => void;
-  handleLikeArticle?: (articleUrl: string) => void;
+  handleRemoveArticle?: (articleIndex: number) => void;
+  handleLikeArticle?: (articleIndex: number) => void;
 }
 
 const Article: FC<IProps> = memo(
-  ({ article, isLikedArticle, handleLikeArticle, handleRemoveArticle }) => {
+  ({
+    article,
+    index,
+    isLikedArticle,
+    handleLikeArticle = () => {},
+    handleRemoveArticle = () => {},
+  }) => {
+    const dispatch = useDispatch();
     return (
       <Grid item xs={6}>
         <ArticleBox>
@@ -28,13 +38,14 @@ const Article: FC<IProps> = memo(
           <ArticleActionsBlock
             article={article}
             isLikedArticle={isLikedArticle}
-            handleLikeArticle={handleLikeArticle}
-            handleRemoveArticle={handleRemoveArticle}
+            handleLikeArticle={() => dispatch(likeArticle(article._id))}
+            // handleLikeArticle={() => index && handleLikeArticle(index)}
+            handleRemoveArticle={() => index && handleRemoveArticle(index)}
           />
           <Box sx={{ display: "flex" }}>
             <ImageBox>
-              {article.urlToImage ? (
-                <img src={article.urlToImage} alt="icon" />
+              {article.image ? (
+                <img src={article.image} alt="icon" />
               ) : (
                 <NoImage />
               )}

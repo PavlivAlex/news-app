@@ -5,11 +5,11 @@ interface ISource {
 
 export interface INewsResponse {
   articles: IArticle[];
-  status: string;
-  totalResults: number;
+  totalArticles: number;
 }
 
 export interface IArticle {
+  _id: string;
   author: string | null;
   content: string;
   isLiked?: boolean;
@@ -17,6 +17,6 @@ export interface IArticle {
   publishedAt: string;
   title: string;
   url: string;
-  urlToImage: string;
+  image: string;
   source: ISource;
 }

@@ -1,6 +1,5 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { REQ_TIMEOUT } from "../constants/global";
-import { LocalStorageHelpers } from "../helpers/localStorage";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 type ConfigModel = AxiosRequestConfig;
 
@@ -11,12 +10,6 @@ const instance = axios.create({
 instance.interceptors.request.use(function (config: ConfigModel): any {
   if (!config.url) {
     throw new axios.Cancel("Operation canceled by the user.");
-  }
-
-  const token = LocalStorageHelpers.getAccessToken();
-
-  if (token && config.headers) {
-    config.headers.Authorization = `Bearer ${token}`;
   }
 
   return config;

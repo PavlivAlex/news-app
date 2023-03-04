@@ -24,27 +24,42 @@ const initialState: StateModel = {
 
 export const getNews: any = createAsyncThunk(
   "news/getNews",
-  async ({ lang, page }: IFetchNewsParams, { getState }: any) => {
+  async ({ lang, max }: IFetchNewsParams, { getState }: any) => {
     try {
       const { newsReducer }: GlobalStateModel = getState();
       const languageFromLocaleStorage = localStorage.getItem("lang");
 
       const params = {
         lang,
-        page: languageFromLocaleStorage !== lang ? 1 : page,
-        pageSize: languageFromLocaleStorage !== lang ? page * 10 : 10,
+        // max: languageFromLocaleStorage !== lang ? max * 10 : 10,
+        pageSize: max,
       };
 
       const likedNews = newsReducer.news.filter(
         (article: IArticle) => article.isLiked
       );
 
-      const response = newsAdapter.setLikedNews(
-        await newsAPI.getNews(params),
-        likedNews
-      );
+      const response = await newsAPI.getTest(params);
+
+      // const response = newsAdapter.setLikedNews(
+      //   await newsAPI.getTest(params),
+      //   likedNews
+      // );
 
       localStorage.setItem("lang", String(lang));
+
+      return response;
+    } catch (error: any) {
+      return error.message;
+    }
+  }
+);
+
+export const likeArticle: any = createAsyncThunk(
+  "news/likeArticle",
+  async (id: string) => {
+    try {
+      const response = await newsAPI.likeArticle(id);
 
       return response;
     } catch (error: any) {
@@ -96,6 +111,12 @@ const newsSlice = createSlice({
     builder.addCase(getNews.pending, (state: StateModel) => {
       state.loading = true;
     });
+    builder.addCase(
+      likeArticle.fulfilled,
+      (state: StateModel, action: IReduxAction) => {
+        console.log(action.payload);
+      }
+    );
   },
 });
 

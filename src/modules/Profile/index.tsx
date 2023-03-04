@@ -27,6 +27,7 @@ const Profile = () => {
       news?.filter((article: IArticle) => article.isLiked)
     );
   }, [news]);
+
   const renderArticles = useMemo(() => {
     return (
       likedNewsSet.size &&
