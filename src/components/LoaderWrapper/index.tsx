@@ -1,6 +1,7 @@
-import { Box, CircularProgress } from "@mui/material";
-import { styled } from "@mui/system";
 import React, { FC } from "react";
+
+// components
+import { Box, CircularProgress, styled } from "@mui/material";
 
 interface IProps {
   children: React.ReactNode;

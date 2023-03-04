@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 // components
 import Router from "./router";
 import { CircularProgress } from "@mui/material";
+import { setLanguageOfNews } from "./redux/slices/news";
+import { LanguageEnum } from "./interfaces/common";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -18,6 +20,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeApp());
+    dispatch(setLanguageOfNews(LanguageEnum.EN));
   }, []);
 
   if (!isAppInitialized) return <CircularProgress />;

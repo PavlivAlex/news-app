@@ -20,6 +20,7 @@ const authSlice = createSlice({
     initializeApp: (state: StateModel) => {
       state.isAppInitialized = false;
       const accessToken = LocalStorageHelpers.getAccessToken();
+      localStorage.setItem("lang", "us");
 
       if (!accessToken) {
         state.isAppInitialized = true;

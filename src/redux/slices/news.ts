@@ -1,9 +1,7 @@
-import { newsAdapter } from "../../adapters/news";
 import { IReduxAction } from "../../interfaces/redux";
 import { LanguageEnum } from "../../interfaces/common";
 import { IArticle, INewsResponse } from "../../interfaces/news";
 import newsAPI, { IFetchNewsParams } from "../../api/news";
-import { StateModel as GlobalStateModel } from "../store";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface StateModel {
@@ -19,47 +17,19 @@ const initialState: StateModel = {
   loading: false,
   isLoadMore: false,
   newsResponse: null,
-  languageOfNews: localStorage.getItem("lang"),
+  languageOfNews: null,
 };
 
 export const getNews: any = createAsyncThunk(
   "news/getNews",
-  async ({ lang, max }: IFetchNewsParams, { getState }: any) => {
+  async ({ lang, max }: IFetchNewsParams) => {
     try {
-      const { newsReducer }: GlobalStateModel = getState();
-      const languageFromLocaleStorage = localStorage.getItem("lang");
-
       const params = {
         lang,
-        // max: languageFromLocaleStorage !== lang ? max * 10 : 10,
         pageSize: max,
       };
 
-      const likedNews = newsReducer.news.filter(
-        (article: IArticle) => article.isLiked
-      );
-
-      const response = await newsAPI.getTest(params);
-
-      // const response = newsAdapter.setLikedNews(
-      //   await newsAPI.getTest(params),
-      //   likedNews
-      // );
-
-      localStorage.setItem("lang", String(lang));
-
-      return response;
-    } catch (error: any) {
-      return error.message;
-    }
-  }
-);
-
-export const likeArticle: any = createAsyncThunk(
-  "news/likeArticle",
-  async (id: string) => {
-    try {
-      const response = await newsAPI.likeArticle(id);
+      const response = await newsAPI.getNews(params);
 
       return response;
     } catch (error: any) {
@@ -111,12 +81,6 @@ const newsSlice = createSlice({
     builder.addCase(getNews.pending, (state: StateModel) => {
       state.loading = true;
     });
-    builder.addCase(
-      likeArticle.fulfilled,
-      (state: StateModel, action: IReduxAction) => {
-        console.log(action.payload);
-      }
-    );
   },
 });
 

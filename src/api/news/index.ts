@@ -1,7 +1,10 @@
 import { APIService } from "../axiosInstance";
-import { newsAdapter } from "../../adapters/news";
-import { IArticle, INewsResponse } from "../../interfaces/news";
-import { apiConfig, apiKey } from "../../config";
+import {
+  IArticle,
+  ILikedNewsResponse,
+  INewsResponse,
+} from "../../interfaces/news";
+import { apiConfig } from "../../config";
 import { LanguageEnum } from "../../interfaces/common";
 
 export interface IFetchNewsParams {
@@ -10,20 +13,20 @@ export interface IFetchNewsParams {
 }
 
 const newsAPI = {
-  getNews: async ({ lang = LanguageEnum.EN, max = 10 }: IFetchNewsParams) => {
-    return APIService.get<INewsResponse>(`${apiConfig}/top-headlines`, {
-      params: { category: "general", apikey: apiKey, max, country: lang },
+  getNews: async ({ lang = LanguageEnum.EN, pageSize = 10 }: any) => {
+    return APIService.get<INewsResponse>(`${apiConfig}/news`, {
+      params: { lang, pageSize },
     }).then(({ data }) => data);
   },
-  getTest: async ({ lang = LanguageEnum.EN, pageSize = 20 }: any) => {
-    return APIService.get<INewsResponse>("http://localhost:3001/api/news", {
-      params: { lang: "ua", pageSize },
+  getLikedNews: async ({ lang = LanguageEnum.EN }: any) => {
+    return APIService.get<ILikedNewsResponse>(`${apiConfig}/news/likedNews`, {
+      params: { lang },
     }).then(({ data }) => data);
   },
   likeArticle: async (id: string) => {
-    return APIService.put<IArticle>(
-      `http://localhost:3001/api/news/like?id=${id}`
-    ).then(({ data }) => data);
+    return APIService.put<IArticle>(`${apiConfig}/news/like?id=${id}`).then(
+      ({ data }) => data
+    );
   },
 };
 

@@ -1,6 +1,8 @@
 import React, { useMemo } from "react";
 
 // helpers
+import newsAPI from "../../api/news";
+import { useFetch } from "../../hooks/useFetch";
 import { IArticle } from "../../interfaces/news";
 import { StateModel } from "../../redux/store";
 import { useSelector } from "react-redux";
@@ -9,6 +11,7 @@ import { useTranslation } from "react-i18next";
 // components
 import Article from "../../components/Article";
 import LinkToNews from "../../components/LinkToNews";
+import LoaderWrapper from "../../components/LoaderWrapper";
 import NoLikedNewsContainer from "./NoLikedNewsContainer";
 import { Box, styled, Typography, Grid } from "@mui/material";
 
@@ -20,22 +23,29 @@ const Profile = () => {
   const { t } = useTranslation();
 
   const { user } = useSelector((state: StateModel) => state.authReducer);
-  const { news } = useSelector((state: StateModel) => state.newsReducer);
+  const { languageOfNews } = useSelector(
+    (state: StateModel) => state.newsReducer
+  );
 
-  const likedNewsSet = useMemo(() => {
-    return new Set<IArticle>(
-      news?.filter((article: IArticle) => article.isLiked)
-    );
-  }, [news]);
+  const { response, loading } = useFetch(
+    () => newsAPI.getLikedNews({ lang: languageOfNews }),
+    [languageOfNews]
+  );
 
   const renderArticles = useMemo(() => {
     return (
-      likedNewsSet.size &&
-      Array.from(likedNewsSet).map((article: IArticle, index: number) => (
-        <Article key={index} article={article} isLikedArticle={true} />
-      ))
+      <LoaderWrapper isLoading={loading}>
+        {response?.data.articles.length &&
+          response.data.articles.map((article: IArticle) => (
+            <Article
+              key={article._id}
+              article={article}
+              isLikedArticle={true}
+            />
+          ))}
+      </LoaderWrapper>
     );
-  }, [likedNewsSet]);
+  }, [response, loading]);
 
   return (
     <Box>
@@ -44,7 +54,7 @@ const Profile = () => {
           {t("profile.account")}: {user}
         </ProfileCard>
 
-        {likedNewsSet?.size ? (
+        {response?.data.articles.length ? (
           <>
             <Typography align="center" variant="h5">
               {t("profile.your_liked_news")}:

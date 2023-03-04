@@ -33,7 +33,6 @@ const ArticleActionsBlock: FC<IProps> = ({
   const { isAuthorized } = useSelector(
     (state: StateModel) => state.authReducer
   );
-  console.log(article);
 
   return isAuthorized ? (
     <Box>

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 
 // helpers
+import newsAPI from "../../api/news";
 import { IArticle } from "../../interfaces/news";
 import { StateModel } from "../../redux/store";
 import { useTranslation } from "react-i18next";
@@ -15,8 +16,6 @@ import { Box, Grid, styled } from "@mui/material";
 
 // styles
 import { variables } from "../../assets/styles/variables";
-import { useFetch } from "../../hooks/useFetch";
-import newsAPI from "../../api/news";
 
 export interface ISelectedArticle {
   isItemSelected: boolean;
@@ -25,18 +24,13 @@ export interface ISelectedArticle {
 
 const News = () => {
   const { t } = useTranslation();
-
   const dispatch = useDispatch();
 
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(10);
 
   const { news, languageOfNews, newsResponse, loading } = useSelector(
     (state: StateModel) => state.newsReducer
   );
-
-  console.log(news?.length);
-
-  // const news1 = useFetch(() => newsAPI.getTest());
 
   const handleRemoveArticle = (removedArticleIndex: number) => {
     const filteredNews = news.filter(
@@ -50,15 +44,18 @@ const News = () => {
     dispatch(setLoadMore(true));
   };
 
-  const handleLikeArticle = (likedArticleIndex: number) => {
+  const handleLikeArticle = async (id: string) => {
+    const response = await newsAPI.likeArticle(id);
     const copiedNews: IArticle[] = JSON.parse(JSON.stringify(news));
-    const updatedNews = copiedNews.map((article, index) => {
-      if (index === likedArticleIndex) {
-        article.isLiked = !article.isLiked;
+    const mappedNews = copiedNews.map((article) => {
+      if (article._id === id) {
+        article.isLiked = response.isLiked;
       }
+
       return article;
     });
-    dispatch(setNews(updatedNews));
+
+    dispatch(setNews(mappedNews));
   };
 
   const renderArticles = useMemo(() => {

@@ -8,6 +8,10 @@ export interface INewsResponse {
   totalArticles: number;
 }
 
+export interface ILikedNewsResponse {
+  data: { articles: IArticle[] };
+}
+
 export interface IArticle {
   _id: string;
   author: string | null;

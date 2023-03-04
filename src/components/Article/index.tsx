@@ -11,15 +11,13 @@ import { Box, Grid, Paper, Typography, styled } from "@mui/material";
 
 // styles
 import { variables } from "../../assets/styles/variables";
-import { useDispatch } from "react-redux";
-import { likeArticle } from "../../redux/slices/news";
 
 interface IProps {
   index?: number;
   article: IArticle;
   isLikedArticle: boolean;
   handleRemoveArticle?: (articleIndex: number) => void;
-  handleLikeArticle?: (articleIndex: number) => void;
+  handleLikeArticle?: (id: string) => void;
 }
 
 const Article: FC<IProps> = memo(
@@ -30,7 +28,6 @@ const Article: FC<IProps> = memo(
     handleLikeArticle = () => {},
     handleRemoveArticle = () => {},
   }) => {
-    const dispatch = useDispatch();
     return (
       <Grid item xs={6}>
         <ArticleBox>
@@ -38,8 +35,7 @@ const Article: FC<IProps> = memo(
           <ArticleActionsBlock
             article={article}
             isLikedArticle={isLikedArticle}
-            handleLikeArticle={() => dispatch(likeArticle(article._id))}
-            // handleLikeArticle={() => index && handleLikeArticle(index)}
+            handleLikeArticle={() => handleLikeArticle(article._id)}
             handleRemoveArticle={() => index && handleRemoveArticle(index)}
           />
           <Box sx={{ display: "flex" }}>
